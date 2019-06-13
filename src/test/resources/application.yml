@@ -1,0 +1,8 @@
+spring:
+  scalecube:
+    discovery:
+      port: 7000
+      ping-interval: 100
+    transport:
+      port: 8000
+      host: 'localhost'

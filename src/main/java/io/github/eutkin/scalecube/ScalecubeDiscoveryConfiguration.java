@@ -26,7 +26,6 @@ public class ScalecubeDiscoveryConfiguration {
                     options
                             .port(config.getPort())
                             .connectTimeout(config.getConnectTimeout())
-                            .useNetworkEmulator(config.isUseNetworkEmulator())
                             .messageCodec(config.getMessageCodec())
                             .maxFrameLength(config.getMaxFrameLength())
                             .syncInterval(config.getSyncInterval())

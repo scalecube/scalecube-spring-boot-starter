@@ -1,14 +1,33 @@
 package io.github.eutkin.scalecube.properties;
 
 
-import io.scalecube.transport.Address;
-import io.scalecube.transport.MessageCodec;
+import io.scalecube.cluster.transport.api.MessageCodec;
+import io.scalecube.net.Address;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static io.scalecube.cluster.ClusterConfig.*;
-import static io.scalecube.transport.TransportConfig.*;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_GOSSIP_FANOUT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_GOSSIP_INTERVAL;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_GOSSIP_REPEAT_MULT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_MEMBER_HOST;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_MEMBER_PORT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_METADATA_TIMEOUT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_PING_INTERVAL;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_PING_REQ_MEMBERS;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_PING_TIMEOUT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_SUSPICION_MULT;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_SYNC_GROUP;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_SYNC_INTERVAL;
+import static io.scalecube.cluster.ClusterConfig.DEFAULT_SYNC_TIMEOUT;
+import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_CONNECT_TIMEOUT;
+import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_MAX_FRAME_LENGTH;
+import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_MESSAGE_CODEC;
+import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_PORT;
 import static java.util.stream.Collectors.toList;
 
 @ConfigurationProperties(prefix = "spring.scalecube")
@@ -78,7 +97,6 @@ public class ScalecubeProperties {
         private List<String> seedMembers = Collections.emptyList();
         private int port = DEFAULT_PORT;
         private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-        private boolean useNetworkEmulator = DEFAULT_USE_NETWORK_EMULATOR;
         private MessageCodec messageCodec = DEFAULT_MESSAGE_CODEC;
         private int maxFrameLength = DEFAULT_MAX_FRAME_LENGTH;
 
@@ -113,10 +131,6 @@ public class ScalecubeProperties {
 
         public int getConnectTimeout() {
             return connectTimeout;
-        }
-
-        public boolean isUseNetworkEmulator() {
-            return useNetworkEmulator;
         }
 
         public MessageCodec getMessageCodec() {
@@ -193,10 +207,6 @@ public class ScalecubeProperties {
 
         public void setConnectTimeout(int connectTimeout) {
             this.connectTimeout = connectTimeout;
-        }
-
-        public void setUseNetworkEmulator(boolean useNetworkEmulator) {
-            this.useNetworkEmulator = useNetworkEmulator;
         }
 
         public void setMessageCodec(MessageCodec messageCodec) {

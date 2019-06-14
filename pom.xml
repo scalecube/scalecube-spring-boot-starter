@@ -8,7 +8,7 @@
 	<version>2.1.5.RELEASE</version>
 
 	<name>scalecube-spring-boot-starter</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Scalecube Integration for Spring Boot</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

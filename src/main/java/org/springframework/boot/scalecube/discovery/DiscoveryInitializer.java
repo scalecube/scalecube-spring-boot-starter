@@ -1,4 +1,4 @@
-package io.github.eutkin.scalecube;
+package org.springframework.boot.scalecube.discovery;
 
 import io.scalecube.services.ServiceEndpoint;
 import io.scalecube.services.discovery.api.ServiceDiscovery;
@@ -6,5 +6,5 @@ import io.scalecube.services.discovery.api.ServiceDiscovery;
 import java.util.function.Function;
 
 @FunctionalInterface
-interface DiscoveryInitializer extends Function<ServiceEndpoint, ServiceDiscovery> {
+public interface DiscoveryInitializer extends Function<ServiceEndpoint, ServiceDiscovery> {
 }

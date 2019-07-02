@@ -1,15 +1,5 @@
-package io.github.eutkin.scalecube.properties;
+package org.springframework.boot.scalecube.properties;
 
-
-import io.scalecube.cluster.transport.api.MessageCodec;
-import io.scalecube.net.Address;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static io.scalecube.cluster.ClusterConfig.DEFAULT_GOSSIP_FANOUT;
 import static io.scalecube.cluster.ClusterConfig.DEFAULT_GOSSIP_INTERVAL;
@@ -29,6 +19,15 @@ import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_MAX_FRA
 import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_MESSAGE_CODEC;
 import static io.scalecube.cluster.transport.api.TransportConfig.DEFAULT_PORT;
 import static java.util.stream.Collectors.toList;
+
+import io.scalecube.cluster.transport.api.MessageCodec;
+import io.scalecube.net.Address;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "spring.scalecube")
 public class ScalecubeProperties {
@@ -65,6 +64,7 @@ public class ScalecubeProperties {
 
         private String host;
         private Integer port;
+        private TransportType type;
 
         public String getHost() {
             return host;

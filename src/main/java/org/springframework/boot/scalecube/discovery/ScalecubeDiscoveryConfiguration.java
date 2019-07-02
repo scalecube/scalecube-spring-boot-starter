@@ -1,10 +1,10 @@
-package io.github.eutkin.scalecube;
+package org.springframework.boot.scalecube.discovery;
 
-import io.github.eutkin.scalecube.properties.ScalecubeProperties;
 import io.scalecube.services.discovery.ScalecubeServiceDiscovery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.scalecube.properties.ScalecubeProperties;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootConfiguration

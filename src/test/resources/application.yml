@@ -2,7 +2,7 @@ spring:
   scalecube:
     discovery:
       port: 7000
-      ping-interval: 100
+      ping-interval: 1000
     transport:
       port: 8000
       host: 'localhost'

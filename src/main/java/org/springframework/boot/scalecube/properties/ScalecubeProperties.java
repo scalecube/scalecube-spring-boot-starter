@@ -64,7 +64,6 @@ public class ScalecubeProperties {
 
         private String host;
         private Integer port;
-        private TransportType type;
 
         public String getHost() {
             return host;

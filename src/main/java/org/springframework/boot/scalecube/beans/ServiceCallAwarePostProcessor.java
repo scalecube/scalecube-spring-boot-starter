@@ -15,7 +15,7 @@ public class ServiceCallAwarePostProcessor
   private BeanFactory beanFactory;
 
   @Override
-  public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+  public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
     if (bean instanceof ServiceCallAware) {
       Microservices microservices = beanFactory.getBean(Microservices.class);
       ServiceCall serviceCall = microservices.call();

@@ -1,7 +1,8 @@
 package org.springframework.boot.scalecube;
 
+import io.scalecube.services.annotations.Service;
+import io.scalecube.services.annotations.ServiceMethod;
 import io.scalecube.services.routing.RandomServiceRouter;
-import io.scalecube.services.routing.RoundRobinServiceRouter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.BeanFactory;
@@ -30,7 +31,6 @@ public class ScalecubeAutoConfigurationTests {
   private ObjectFactory<ExampleService> exampleService;
 
 
-
   @Test
   void name() {
     BusinessService bean1 = beanFactory.getBean(BusinessService.class);
@@ -57,18 +57,25 @@ public class ScalecubeAutoConfigurationTests {
     public Flux<String> go() {
       return service.get(Flux.just("hello", "world"));
     }
-   }
+  }
+
+  @Service
+  interface S {
+
+    @ServiceMethod
+    Flux<String> go();
+  }
 
   @Component
-  public static class SomeBusinessService {
+  public static class SomeBusinessService implements S {
 
-    @SelectionStrategy(RoundRobinServiceRouter.class)
     private final ExampleService service;
 
     public SomeBusinessService(ExampleService service) {
       this.service = service;
     }
 
+    @Override
     public Flux<String> go() {
       return service.get(Flux.just("hello", "world"));
     }

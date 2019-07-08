@@ -56,17 +56,13 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
     }
 
     private <T> void register(BeanDefinitionRegistry registry, Class<T> type) {
-
-
-
       GenericBeanDefinition bd = new GenericBeanDefinition();
       bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
       bd.setAttribute("external-service", true);
-      bd.setDependsOn("microservices");
       ConstructorArgumentValues z = new ConstructorArgumentValues();
       z.addIndexedArgumentValue(0, type);
       bd.setConstructorArgumentValues(z);
-      bd.setFactoryBeanName("externalServiceFactory");
+      bd.setFactoryBeanName(EXTERNAL_SERVICE_FACTORY_BEAN_NAME);
       bd.setFactoryMethodName("createService");
 
       registry.registerBeanDefinition(type.getSimpleName(), bd);

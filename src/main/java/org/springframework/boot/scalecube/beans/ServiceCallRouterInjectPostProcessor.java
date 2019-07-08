@@ -4,10 +4,12 @@ import io.scalecube.services.annotations.Service;
 import java.lang.reflect.Field;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
 @Component
+@DependsOn("microservices")
 public class ServiceCallRouterInjectPostProcessor implements BeanPostProcessor {
 
   @Override

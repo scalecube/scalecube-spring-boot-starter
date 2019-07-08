@@ -4,6 +4,7 @@ import io.scalecube.services.Reflect;
 import io.scalecube.services.ServiceCall;
 import io.scalecube.services.api.ServiceMessage;
 import io.scalecube.services.methods.MethodInfo;
+import io.scalecube.services.routing.Router;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -31,6 +32,7 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
     Optional<Object> check =
         toStringOrEqualsOrHashCode(method.getName(), serviceInterface, params);
@@ -41,6 +43,12 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
     if ("setServiceCall".equals(method.getName()) && Objects.nonNull(params)
         && params.length == 1) {
       this.serviceCall = (ServiceCall) params[0];
+      return null;
+    }
+
+    if ("setRouter".equals(method.getName()) && Objects.nonNull(params)
+        && params.length == 1) {
+      this.serviceCall = this.serviceCall.router((Class<? extends Router>) params[0]);
       return null;
     }
 

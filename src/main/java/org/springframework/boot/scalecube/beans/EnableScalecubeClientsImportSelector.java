@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -17,7 +18,7 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
 
   private static final String[] IMPORTS = {
       ScalecubeClientsBeanRegistrar.class.getName(),
-      ServiceCallAwaringBeanPostProcessorRegistrar.class.getName()
+      ServiceCallAwareBeanPostProcessorRegistrar.class.getName()
   };
 
   @Override
@@ -49,38 +50,50 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
     }
 
     private <T> void register(BeanDefinitionRegistry registry, Class<T> type) {
-      ScalecubeClientInvocationHandler handler = new ScalecubeClientInvocationHandler(type);
+
+      GenericBeanDefinition handlerBd = new GenericBeanDefinition();
+      handlerBd.setBeanClass(ScalecubeClientInvocationHandler.class);
+      handlerBd.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+      handlerBd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+      ConstructorArgumentValues x = new ConstructorArgumentValues();
+      x.addIndexedArgumentValue(0, type);
+      handlerBd.setConstructorArgumentValues(x);
+      registry.registerBeanDefinition("proxyStateHolder" + type.getSimpleName(), handlerBd);
+
       @SuppressWarnings("unchecked")
-      T proxy = (T) Proxy
+      T proxyService = (T) Proxy
           .newProxyInstance(this.getClass().getClassLoader(),
-              new Class[]{type, ServiceCallAware.class}, handler);
+              new Class[]{type, ServiceCallAware.class}, (proxy, method, args) -> null);
       GenericBeanDefinition bd = new GenericBeanDefinition();
-      bd.setBeanClass(type);
-      bd.setInstanceSupplier(() -> proxy);
+      bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+      bd.setBeanClass(proxyService.getClass());
+      bd.setAttribute("external-service", true);
+      bd.setDependsOn("microservices");
       registry.registerBeanDefinition(type.getSimpleName(), bd);
     }
 
   }
 
-  public static class ServiceCallAwaringBeanPostProcessorRegistrar implements
+  public static class ServiceCallAwareBeanPostProcessorRegistrar implements
       ImportBeanDefinitionRegistrar {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
         BeanDefinitionRegistry registry) {
       if (!registry.containsBeanDefinition(
-          ServiceCallAwareBeaFactoryProcessor.BEAN_NAME)) {
-        registerServiceCallAwaringBeanPostProcessor(registry);
+          ServiceCallAwarePostProcessor.BEAN_NAME)) {
+        registerServiceCallAwareBeanPostProcessor(registry);
       }
     }
 
-    private void registerServiceCallAwaringBeanPostProcessor(
+    private void registerServiceCallAwareBeanPostProcessor(
         BeanDefinitionRegistry registry) {
       GenericBeanDefinition definition = new GenericBeanDefinition();
-      definition.setBeanClass(ServiceCallAwareBeaFactoryProcessor.class);
+      definition.setBeanClass(ServiceCallAwarePostProcessor.class);
       definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+      definition.setDependsOn("microservices");
       registry.registerBeanDefinition(
-          ServiceCallAwareBeaFactoryProcessor.BEAN_NAME, definition);
+          ServiceCallAwarePostProcessor.BEAN_NAME, definition);
 
     }
 

@@ -4,7 +4,7 @@
 
 This project helps to use the [Scalecube Service](scalecube.io) in the usual way in the Spring Eco system.
 
-## Glosary
+## Glossary
 
 **Scalecube External Service** or **ESS** — scalecube service deployed on another node.
 

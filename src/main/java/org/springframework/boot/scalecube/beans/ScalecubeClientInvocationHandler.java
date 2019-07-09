@@ -1,9 +1,11 @@
 package org.springframework.boot.scalecube.beans;
 
+import io.scalecube.services.Microservices;
 import io.scalecube.services.Reflect;
 import io.scalecube.services.ServiceCall;
 import io.scalecube.services.api.ServiceMessage;
 import io.scalecube.services.methods.MethodInfo;
+import io.scalecube.services.routing.RoundRobinServiceRouter;
 import io.scalecube.services.routing.Router;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -11,8 +13,10 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import org.reactivestreams.Publisher;
+import org.springframework.beans.factory.BeanFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,11 +26,15 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
       ServiceMessage.error(503, 503, "Unexpected empty response");
 
 
-  private ServiceCall serviceCall;
+  private final BeanFactory beanFactory;
   private final Map<Method, MethodInfo> genericReturnTypes;
   private final Class<?> serviceInterface;
+  private AtomicReference<ServiceCall> serviceCallRef = new AtomicReference<>();
+  private Class<? extends Router> routerType = RoundRobinServiceRouter.class;
 
-  ScalecubeClientInvocationHandler(Class<?> serviceInterface) {
+  ScalecubeClientInvocationHandler(BeanFactory beanFactory,
+      Class<?> serviceInterface) {
+    this.beanFactory = beanFactory;
     this.genericReturnTypes = Reflect.methodsInfo(serviceInterface);
     this.serviceInterface = serviceInterface;
   }
@@ -40,17 +48,15 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
       return check.get(); // toString, hashCode was invoked.
     }
 
-    if ("setServiceCall".equals(method.getName()) && Objects.nonNull(params)
-        && params.length == 1) {
-      this.serviceCall = (ServiceCall) params[0];
-      return null;
-    }
 
     if ("setRouter".equals(method.getName()) && Objects.nonNull(params)
         && params.length == 1) {
-      this.serviceCall = this.serviceCall.router((Class<? extends Router>) params[0]);
+      this.routerType = (Class<? extends Router>) params[0];
       return null;
     }
+
+    ServiceCall serviceCall = serviceCallRef.updateAndGet(
+        call -> call == null ? beanFactory.getBean(Microservices.class).call().router(routerType) : call);
 
     final MethodInfo methodInfo = genericReturnTypes.get(method);
     final Type returnType = methodInfo.parameterizedReturnType();
@@ -134,4 +140,5 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
   private Function<ServiceMessage, Object> msgToResp() {
     return sm -> sm.hasData() ? sm.data() : UNEXPECTED_EMPTY_RESPONSE;
   }
+
 }

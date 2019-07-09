@@ -1,11 +1,17 @@
 package org.springframework.boot.scalecube.beans;
 
+import static org.springframework.beans.factory.config.BeanDefinition.ROLE_INFRASTRUCTURE;
+import static org.springframework.boot.scalecube.beans.ExternalServiceBeanFactoryPostProcessor.ESS_BFPP_BEAN_NAME;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -18,10 +24,10 @@ import org.springframework.util.MultiValueMap;
 public class EnableScalecubeClientsImportSelector implements ImportSelector {
 
   private static final String[] IMPORTS = {
-      ScalecubeClientsBeanRegistrar.class.getName(),
-      ServiceCallAwareBeanPostProcessorRegistrar.class.getName()
+      ExternalServiceBeanFactoryPostProcessorRegistrar.class.getName(),
+      ScalecubeClientsBeanRegistrar.class.getName()
   };
-  public static final String EXTERNAL_SERVICE_FACTORY_BEAN_NAME = "externalServiceFactory";
+  private static final String EXTERNAL_SERVICE_FACTORY_BEAN_NAME = "externalServiceFactory";
 
   @Override
   public String[] selectImports(AnnotationMetadata metadata) {
@@ -34,10 +40,13 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
     public void registerBeanDefinitions(AnnotationMetadata metadata,
         BeanDefinitionRegistry registry) {
 
-      GenericBeanDefinition factoryBd = new GenericBeanDefinition();
-      factoryBd.setBeanClass(ProxyExternalServiceFactory.class);
-      factoryBd.setSynthetic(true);
-      registry.registerBeanDefinition(EXTERNAL_SERVICE_FACTORY_BEAN_NAME, factoryBd);
+      if (!registry.containsBeanDefinition(EXTERNAL_SERVICE_FACTORY_BEAN_NAME)) {
+        GenericBeanDefinition factoryBd = new GenericBeanDefinition();
+        factoryBd.setBeanClass(ProxyExternalServiceFactory.class);
+        factoryBd.setSynthetic(true);
+        registry.registerBeanDefinition(EXTERNAL_SERVICE_FACTORY_BEAN_NAME, factoryBd);
+      }
+
       getTypes(metadata).forEach(type -> register(registry, type));
     }
 
@@ -56,6 +65,9 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
     }
 
     private <T> void register(BeanDefinitionRegistry registry, Class<T> type) {
+      if (registry.containsBeanDefinition(type.getSimpleName())) {
+        return;
+      }
       GenericBeanDefinition bd = new GenericBeanDefinition();
       bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
       bd.setAttribute("external-service", true);
@@ -70,41 +82,38 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
 
   }
 
-  public static class ServiceCallAwareBeanPostProcessorRegistrar implements
-      ImportBeanDefinitionRegistrar {
+  static class ExternalServiceBeanFactoryPostProcessorRegistrar implements ImportBeanDefinitionRegistrar {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
         BeanDefinitionRegistry registry) {
-      if (!registry.containsBeanDefinition(
-          ServiceCallAwarePostProcessor.BEAN_NAME)) {
-        registerServiceCallAwareBeanPostProcessor(registry);
+      if (!registry.containsBeanDefinition(ESS_BFPP_BEAN_NAME)) {
+        GenericBeanDefinition bd = new GenericBeanDefinition();
+        bd.setSynthetic(true);
+        bd.setRole(ROLE_INFRASTRUCTURE);
+        bd.setBeanClass(ExternalServiceBeanFactoryPostProcessor.class);
+        registry.registerBeanDefinition(ESS_BFPP_BEAN_NAME, bd);
       }
     }
-
-    private void registerServiceCallAwareBeanPostProcessor(
-        BeanDefinitionRegistry registry) {
-      GenericBeanDefinition definition = new GenericBeanDefinition();
-      definition.setBeanClass(ServiceCallAwarePostProcessor.class);
-      definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
-      definition.setDependsOn("microservices");
-      registry.registerBeanDefinition(
-          ServiceCallAwarePostProcessor.BEAN_NAME, definition);
-    }
-
   }
 
-  static class ProxyExternalServiceFactory {
+  static class ProxyExternalServiceFactory implements BeanFactoryAware {
 
-    @SuppressWarnings("unchecked")
+    private BeanFactory beanFactory;
+
+    @SuppressWarnings({"unchecked", "unused"})
     public <T> T createService(Class<T> type) {
       InvocationHandler handler = new ScalecubeClientInvocationHandler(
-          type);
+          beanFactory, type);
       return (T) Proxy
           .newProxyInstance(this.getClass().getClassLoader(),
-              new Class[]{type, ServiceCallAware.class}, handler);
+              new Class[]{type, RouterConsumer.class}, handler);
     }
 
 
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+      this.beanFactory = beanFactory;
+    }
   }
 }

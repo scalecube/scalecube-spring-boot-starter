@@ -8,13 +8,12 @@ import org.springframework.boot.scalecube.properties.ScalecubeProperties;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootConfiguration
-@ConditionalOnClass(name = "ScalecubeServiceDiscovery")
+@ConditionalOnClass(ScalecubeServiceDiscovery.class)
 public class ScalecubeDiscoveryConfiguration {
 
     private ScalecubeProperties properties;
 
     @Bean
-    @ConditionalOnClass(ScalecubeServiceDiscovery.class)
     public DiscoveryInitializer discoveryInitializer() {
         return endpoint -> {
             ScalecubeServiceDiscovery serviceDiscovery = new ScalecubeServiceDiscovery(endpoint);

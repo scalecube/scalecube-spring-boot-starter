@@ -5,9 +5,11 @@ import io.scalecube.services.annotations.ServiceMethod;
 import reactor.core.publisher.Flux;
 
 @Service
-public interface InternalScalecubeService1 {
+public interface FirstLocalService {
 
   @ServiceMethod
-  Flux<String> lower(Flux<String> input);
+  default Flux<String> identity(Flux<String> input) {
+    return input;
+  }
 
 }

@@ -3,6 +3,7 @@ package org.springframework.boot.scalecube.beans;
 import static org.springframework.beans.factory.config.BeanDefinition.ROLE_INFRASTRUCTURE;
 import static org.springframework.boot.scalecube.beans.ExternalServiceBeanFactoryPostProcessor.ESS_BFPP_BEAN_NAME;
 
+import io.scalecube.services.annotations.Service;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -18,8 +19,10 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 public class EnableScalecubeClientsImportSelector implements ImportSelector {
 
@@ -77,12 +80,20 @@ public class EnableScalecubeClientsImportSelector implements ImportSelector {
       bd.setFactoryBeanName(EXTERNAL_SERVICE_FACTORY_BEAN_NAME);
       bd.setFactoryMethodName("createService");
 
-      registry.registerBeanDefinition(type.getSimpleName(), bd);
+      String serviceBeanName;
+      Service annotation = AnnotationUtils.findAnnotation(type, Service.class);
+      if (annotation != null && !annotation.value().isEmpty()) {
+        serviceBeanName = annotation.value();
+      } else {
+        serviceBeanName = StringUtils.uncapitalize(type.getName());
+      }
+      registry.registerBeanDefinition(serviceBeanName, bd);
     }
 
   }
 
-  static class ExternalServiceBeanFactoryPostProcessorRegistrar implements ImportBeanDefinitionRegistrar {
+  static class ExternalServiceBeanFactoryPostProcessorRegistrar implements
+      ImportBeanDefinitionRegistrar {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,

@@ -4,10 +4,10 @@ import io.scalecube.services.annotations.Service;
 import io.scalecube.services.annotations.ServiceMethod;
 import reactor.core.publisher.Flux;
 
-@Service
-public interface InternalScalecubeService2 {
+@Service("sample-external-service")
+public interface RemoteServiceClient {
 
   @ServiceMethod
-  Flux<String> lower(Flux<String> input);
+  Flux<String> identity(Flux<String> input);
 
 }

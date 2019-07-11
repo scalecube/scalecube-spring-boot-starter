@@ -1,6 +1,5 @@
 package org.springframework.boot.scalecube.beans;
 
-import io.scalecube.services.routing.RoundRobinServiceRouter;
 import io.scalecube.services.routing.Router;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,5 +17,11 @@ public @interface SelectionStrategy {
    *
    * @return Router class to use
    */
-  Class<? extends Router> value() default RoundRobinServiceRouter.class;
+  Class<? extends Router> routerType() default Router.class;
+
+  /**
+   * Select a router
+   * @return Router Bean Name
+   */
+  String routerBeanName() default "";
 }

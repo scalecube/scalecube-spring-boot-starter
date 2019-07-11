@@ -5,7 +5,6 @@ import io.scalecube.services.Reflect;
 import io.scalecube.services.ServiceCall;
 import io.scalecube.services.api.ServiceMessage;
 import io.scalecube.services.methods.MethodInfo;
-import io.scalecube.services.routing.RoundRobinServiceRouter;
 import io.scalecube.services.routing.Router;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -30,7 +29,7 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
   private final Map<Method, MethodInfo> genericReturnTypes;
   private final Class<?> serviceInterface;
   private AtomicReference<ServiceCall> serviceCallRef = new AtomicReference<>();
-  private Class<? extends Router> routerType = RoundRobinServiceRouter.class;
+  private Router router;
 
   ScalecubeClientInvocationHandler(BeanFactory beanFactory,
       Class<?> serviceInterface) {
@@ -48,15 +47,13 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
       return check.get(); // toString, hashCode was invoked.
     }
 
-
     if ("setRouter".equals(method.getName()) && Objects.nonNull(params)
         && params.length == 1) {
-      this.routerType = (Class<? extends Router>) params[0];
+      this.router = (Router) params[0];
       return null;
     }
 
-    ServiceCall serviceCall = serviceCallRef.updateAndGet(
-        call -> call == null ? beanFactory.getBean(Microservices.class).call().router(routerType) : call);
+    ServiceCall serviceCall = serviceCallRef.updateAndGet(this::createOrGet);
 
     final MethodInfo methodInfo = genericReturnTypes.get(method);
     final Type returnType = methodInfo.parameterizedReturnType();
@@ -90,6 +87,19 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
         throw new IllegalArgumentException(
             "Communication mode is not supported: " + method);
     }
+  }
+
+  private ServiceCall createOrGet(ServiceCall call) {
+    if (call == null) {
+      Microservices microservices = beanFactory.getBean(Microservices.class);
+      ServiceCall serviceCall = microservices.call();
+      if (router != null) {
+        return serviceCall.router(router);
+      } else {
+        return serviceCall;
+      }
+    }
+    return call;
   }
 
   /**

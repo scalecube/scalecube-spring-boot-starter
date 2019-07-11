@@ -6,4 +6,5 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootConfiguration
 @ComponentScan("org.springframework.boot.scalecube")
 public class ScalecubeAutoConfiguration {
+
 }

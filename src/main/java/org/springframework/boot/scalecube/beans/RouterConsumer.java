@@ -2,8 +2,8 @@ package org.springframework.boot.scalecube.beans;
 
 import io.scalecube.services.routing.Router;
 
-interface RouterConsumer {
+public interface RouterConsumer {
 
-  void setRouter(Class<? extends Router> router);
+  void setRouter(Router router);
 
 }

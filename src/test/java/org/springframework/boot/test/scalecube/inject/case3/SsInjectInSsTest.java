@@ -1,4 +1,4 @@
-package org.springframework.boot.test.scalecube.inject.case2;
+package org.springframework.boot.test.scalecube.inject.case3;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.scalecube.example.ExternalScalecubeService1;
 import org.springframework.boot.test.scalecube.example.ExternalScalecubeService2;
 import org.springframework.boot.test.scalecube.example.InternalScalecubeService1;
-import org.springframework.boot.test.scalecube.inject.case2.EssInjectInSsTest.EssInjectInSsContext;
+import org.springframework.boot.test.scalecube.example.InternalScalecubeService2;
+import org.springframework.boot.test.scalecube.inject.case3.SsInjectInSsTest.SsInjectInSsContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -26,9 +28,9 @@ import reactor.core.publisher.Flux;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {
-    EssInjectInSsContext.class, ScalecubeAutoConfiguration.class
+    SsInjectInSsContext.class, ScalecubeAutoConfiguration.class
 })
-public class EssInjectInSsTest {
+public class SsInjectInSsTest {
 
   @Autowired
   private InternalScalecubeService1 internalScalecubeService;
@@ -53,45 +55,49 @@ public class EssInjectInSsTest {
   @Test
   void checkInjectedField() {
     SomeInternalScalecubeService service = (SomeInternalScalecubeService) this.internalScalecubeService;
-    String result1 = service.externalScalecubeService1
+    String result1 = service.internalScalecubeService1
         .lower(Flux.just("A"))
         .blockLast();
-    assertEquals("a", result1);
+    assertEquals("A", result1);
 
-    String result2 = service.externalScalecubeService2
+    String result2 = service.internalScalecubeService2
         .lower(Flux.just("A"))
         .blockLast();
-    assertEquals("a", result2);
+    assertEquals("A", result2);
   }
 
   @Configuration
   @EnableScalecubeClients({ExternalScalecubeService1.class, ExternalScalecubeService2.class})
-  @ComponentScan("org.springframework.boot.test.scalecube.inject.case2")
-  static class EssInjectInSsContext {
+  @ComponentScan("org.springframework.boot.test.scalecube.inject.case3")
+  static class SsInjectInSsContext {
 
+    @Bean
+    public InternalScalecubeService2 service2() {
+      return input -> input;
+    }
   }
 
   @Component("internal-service")
   static class SomeInternalScalecubeService implements InternalScalecubeService1 {
 
-    private final ExternalScalecubeService1 externalScalecubeService1;
+    private final InternalScalecubeService2 internalScalecubeService1;
 
-    private ExternalScalecubeService2 externalScalecubeService2;
+    private InternalScalecubeService2 internalScalecubeService2;
 
     SomeInternalScalecubeService(@SelectionStrategy(routerType = RandomServiceRouter.class)
-        ExternalScalecubeService1 externalScalecubeService1) {
-      this.externalScalecubeService1 = externalScalecubeService1;
+        InternalScalecubeService2 internalScalecubeService1) {
+      this.internalScalecubeService1 = internalScalecubeService1;
     }
 
     @Autowired
-    public void setExternalScalecubeService2(
-        ExternalScalecubeService2 externalScalecubeService2) {
-      this.externalScalecubeService2 = externalScalecubeService2;
+    public void setInternalScalecubeService2(
+        InternalScalecubeService2 internalScalecubeService2) {
+      this.internalScalecubeService2 = internalScalecubeService2;
     }
 
     @Override
     public Flux<String> lower(Flux<String> input) {
-      return externalScalecubeService1.lower(input);
+      return internalScalecubeService1.lower(input);
     }
   }
 }

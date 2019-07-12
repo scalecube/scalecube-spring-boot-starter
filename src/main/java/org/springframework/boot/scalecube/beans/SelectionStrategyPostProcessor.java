@@ -16,12 +16,12 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
-@Component
-public class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAware,
-    RouterInitializer {
+class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAware,
+    RouterCreator {
+
+  static final String BEAN_NAME = "selectionStrategyBeanPostProcessor";
 
   private static final Logger logger = LoggerFactory
       .getLogger(SelectionStrategyPostProcessor.class);

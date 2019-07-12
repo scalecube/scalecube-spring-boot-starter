@@ -23,5 +23,5 @@ public @interface SelectionStrategy {
    * Select a router
    * @return Router Bean Name
    */
-  String routerBeanName() default "";
+  String router() default "";
 }

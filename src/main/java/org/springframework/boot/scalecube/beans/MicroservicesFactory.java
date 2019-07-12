@@ -1,6 +1,6 @@
 package org.springframework.boot.scalecube.beans;
 
-import static org.springframework.beans.factory.config.BeanDefinition.ROLE_INFRASTRUCTURE;
+import static org.springframework.boot.scalecube.beans.EnableScalecubeClientsImportSelector.REMOTE_SERVICE_ATTRIBUTE;
 
 import io.scalecube.services.Microservices;
 import io.scalecube.services.annotations.Service;
@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.scalecube.discovery.DiscoveryInitializer;
-import org.springframework.context.annotation.Role;
-import org.springframework.stereotype.Component;
 
-@Component("microservices")
-@Role(ROLE_INFRASTRUCTURE)
-public class MicroservicesFactory extends AbstractFactoryBean<Microservices> implements
+/**
+ * Factory of Scalecube Microservices.
+ */
+class MicroservicesFactory extends AbstractFactoryBean<Microservices> implements
     InitializingBean {
+
+  static final String BEAN_NAME = "microservices";
 
   private final ConfigurableListableBeanFactory beanFactory;
 
@@ -30,7 +31,6 @@ public class MicroservicesFactory extends AbstractFactoryBean<Microservices> imp
     this.beanFactory = beanFactory;
   }
 
-  @Autowired
   protected Microservices createInstance() {
     Microservices.Builder builder = Microservices.builder();
     if (discoveryInitializer != null) {
@@ -43,7 +43,8 @@ public class MicroservicesFactory extends AbstractFactoryBean<Microservices> imp
     Object[] services = Stream
         .of(beanDefinitionNames)
         .filter(serviceBeanName -> !beanFactory.getBeanDefinition(serviceBeanName)
-            .hasAttribute("external-service") && beanFactory.findAnnotationOnBean(serviceBeanName,
+            .hasAttribute(REMOTE_SERVICE_ATTRIBUTE)
+            && beanFactory.findAnnotationOnBean(serviceBeanName,
             Service.class) != null
         )
         .map(beanFactory::getBean)

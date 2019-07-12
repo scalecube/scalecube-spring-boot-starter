@@ -19,7 +19,7 @@ import org.springframework.beans.factory.BeanFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class ScalecubeClientInvocationHandler implements InvocationHandler {
+public class RemoteServiceClientInvocationHandler implements InvocationHandler {
 
   private static final ServiceMessage UNEXPECTED_EMPTY_RESPONSE =
       ServiceMessage.error(503, 503, "Unexpected empty response");
@@ -31,7 +31,7 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
   private AtomicReference<ServiceCall> serviceCallRef = new AtomicReference<>();
   private Router router;
 
-  ScalecubeClientInvocationHandler(BeanFactory beanFactory,
+  RemoteServiceClientInvocationHandler(BeanFactory beanFactory,
       Class<?> serviceInterface) {
     this.beanFactory = beanFactory;
     this.genericReturnTypes = Reflect.methodsInfo(serviceInterface);
@@ -40,7 +40,8 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
 
   @Override
   @SuppressWarnings("unchecked")
-  public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
+  public Object invoke(Object proxy, Method method, Object[] params) {
+
     Optional<Object> check =
         toStringOrEqualsOrHashCode(method.getName(), serviceInterface, params);
     if (check.isPresent()) {
@@ -113,7 +114,6 @@ public class ScalecubeClientInvocationHandler implements InvocationHandler {
    */
   private Optional<Object> toStringOrEqualsOrHashCode(
       String method, Class<?> serviceInterface, Object... args) {
-
     switch (method) {
       case "toString":
         return Optional.of(serviceInterface.toString());

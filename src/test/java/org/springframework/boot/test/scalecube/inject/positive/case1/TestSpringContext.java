@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @TestConfiguration
-@EnableScalecubeClients({RemoteServiceClient.class})
+@EnableScalecubeClients(remoteServices = {RemoteServiceClient.class})
 @ComponentScan(basePackageClasses = EssInjectInCustomerBeanTest.class)
 public class TestSpringContext {
 

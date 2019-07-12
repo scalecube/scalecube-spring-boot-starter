@@ -13,26 +13,32 @@ import org.springframework.beans.factory.support.InstantiationStrategy;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.annotation.AnnotationUtils;
 
-public class ExternalServiceInstantiationStrategy implements InstantiationStrategy,
-    RouterInitializer {
+/**
+ * If a remote service is present in the constructor as a parameter and the SelectionStrategy
+ * annotation is on the parameter, the router of the remote service will be overridden by the value
+ * from the annotation.
+ */
+class InjectRouterRemoteServiceInstantiationStrategy implements InstantiationStrategy,
+    RouterCreator {
 
   private final InstantiationStrategy delegate;
 
-  public ExternalServiceInstantiationStrategy(
-      InstantiationStrategy delegate) {
-    this.delegate = delegate;
-  }
-
-  public ExternalServiceInstantiationStrategy() {
+  InjectRouterRemoteServiceInstantiationStrategy() {
     this.delegate = new CglibSubclassingInstantiationStrategy();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner)
       throws BeansException {
     return delegate.instantiate(bd, beanName, owner);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner,
       Constructor<?> ctor, Object... args) throws BeansException {
@@ -40,6 +46,9 @@ public class ExternalServiceInstantiationStrategy implements InstantiationStrate
     return delegate.instantiate(bd, beanName, owner, ctor, args);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner,
       Object factoryBean, Method factoryMethod, Object... args) throws BeansException {

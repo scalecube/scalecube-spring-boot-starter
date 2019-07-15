@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for customization router.
+ *
+ * <p>Only classes implementing {@link RouterConsumer} apply.
  */
 @Target(value = {ElementType.FIELD, ElementType.PARAMETER})
 @Retention(value = RetentionPolicy.RUNTIME)

@@ -7,6 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation for customization router.
+ */
 @Target(value = {ElementType.FIELD, ElementType.PARAMETER})
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
@@ -20,7 +23,8 @@ public @interface SelectionStrategy {
   Class<? extends Router> routerType() default Router.class;
 
   /**
-   * Select a router
+   * Select a router.
+   *
    * @return Router Bean Name
    */
   String router() default "";

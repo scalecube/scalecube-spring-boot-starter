@@ -19,6 +19,15 @@ import org.springframework.beans.factory.BeanFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Invocation handler for remote service client proxy.
+ *
+ * <p>Stores the state of the proxy object.
+ * Initializes {@link ServiceCall serviceCall} at the first call of the method to receive data from
+ * a remote service.
+ *
+ * @see EnableScalecubeClientsImportSelector
+ */
 public class RemoteServiceClientInvocationHandler implements InvocationHandler {
 
   private static final ServiceMessage UNEXPECTED_EMPTY_RESPONSE =
@@ -38,6 +47,9 @@ public class RemoteServiceClientInvocationHandler implements InvocationHandler {
     this.serviceInterface = serviceInterface;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @SuppressWarnings("unchecked")
   public Object invoke(Object proxy, Method method, Object[] params) {

@@ -18,6 +18,9 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
+/**
+ * BeanPostProcessor for {@link SelectionStrategy}.
+ */
 class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAware,
     RouterCreator {
 
@@ -28,6 +31,16 @@ class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAw
 
   private BeanFactory beanFactory;
 
+  /**
+   * Injects custom router in handling bean.
+   *
+   * @param bean the new bean instance
+   * @param beanName the name of the bean
+   * @return the bean instance to use, either the original or a wrapped one; if {@code null}, no
+   * subsequent BeanPostProcessors will be invoked
+   * @throws org.springframework.beans.BeansException in case of errors
+   * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
+   */
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName)
       throws BeansException {
@@ -92,6 +105,9 @@ class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAw
     while (targetClass != null && targetClass != Object.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;

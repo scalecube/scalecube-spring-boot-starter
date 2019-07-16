@@ -1,6 +1,6 @@
 package org.springframework.boot.scalecube.properties.discovery;
 
-import static org.springframework.boot.scalecube.properties.discovery.Discovery.setProperty;
+import static org.springframework.boot.scalecube.properties.ScalecubeProperties.setProperty;
 
 import io.scalecube.cluster.gossip.GossipConfig;
 import java.util.Optional;

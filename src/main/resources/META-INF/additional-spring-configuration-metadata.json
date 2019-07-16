@@ -20,6 +20,18 @@
       "type": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector",
       "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
     }
+  ,
+    {
+      "name": "spring.scalecube.transport",
+      "type": "org.springframework.boot.scalecube.properties.transport.Transport",
+      "sourceType": "org.springframework.boot.scalecube.properties.transport.Transport"
+    }
+  ,
+    {
+      "name": "spring.scalecube.transport.rsocket",
+      "type": "org.springframework.boot.scalecube.properties.transport.RSocketTransport",
+      "sourceType": "org.springframework.boot.scalecube.properties.transport.RSocketTransport"
+    }
   ],
   "properties": [
     {
@@ -91,6 +103,16 @@
       "name": "spring.scalecube.discovery.failure-detector.ping-req-members",
       "type": "java.lang.Integer",
       "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
+    },
+    {
+      "name": "spring.scalecube.transport.port",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.transport.Transport"
+    },
+    {
+      "name": "spring.scalecube.transport.rsocket.worker-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.transport.RSocketTransport"
     }
   ]
 }

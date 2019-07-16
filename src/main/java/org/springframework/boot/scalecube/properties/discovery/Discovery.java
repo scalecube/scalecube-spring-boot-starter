@@ -1,16 +1,15 @@
 package org.springframework.boot.scalecube.properties.discovery;
 
+import static org.springframework.boot.scalecube.properties.ScalecubeProperties.setProperty;
+
 import io.scalecube.cluster.ClusterConfig;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+/**
+ * Properties for configuration discovery service.
+ */
 public class Discovery implements UnaryOperator<ClusterConfig> {
-
-  private Map<String, String> metadata = new HashMap<>();
 
   private DiscoveryTransport transport = new DiscoveryTransport();
   private DiscoveryMembership membership = new DiscoveryMembership();
@@ -106,7 +105,5 @@ public class Discovery implements UnaryOperator<ClusterConfig> {
     this.memberPort = memberPort;
   }
 
-  static <T, C> C setProperty(C config, Function<T, C> c, Supplier<Optional<T>> property) {
-    return property.get().map(c).orElse(config);
-  }
+
 }

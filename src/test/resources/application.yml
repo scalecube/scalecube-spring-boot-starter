@@ -1,7 +1,0 @@
-spring:
-  scalecube:
-    discovery:
-      transport:
-        port: 9000
-      gossip:
-        fanout:

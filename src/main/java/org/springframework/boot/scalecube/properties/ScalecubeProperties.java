@@ -2,14 +2,20 @@ package org.springframework.boot.scalecube.properties;
 
 
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.scalecube.properties.discovery.Discovery;
+import org.springframework.boot.scalecube.properties.transport.Transport;
 
 @ConfigurationProperties(prefix = "spring.scalecube")
 public class ScalecubeProperties {
 
   private Transport transport;
 
+  /**
+   * Discovery service.
+   */
   private Discovery discovery;
 
   public Transport getTransport() {
@@ -36,35 +42,8 @@ public class ScalecubeProperties {
     this.discovery = discovery;
   }
 
-  public static class Transport {
-
-    private String host;
-    private Integer port;
-
-    public String getHost() {
-      return host;
-    }
-
-    public Integer getPort() {
-      return port;
-    }
-
-    public Optional<Integer> getPortIfExists() {
-      return Optional.ofNullable(port);
-    }
-
-    public void setPort(Integer port) {
-      this.port = port;
-    }
-
-    public Optional<String> getHostIfExists() {
-      return Optional.ofNullable(host);
-    }
-
-    public void setHost(String host) {
-      this.host = host;
-    }
+  public static <T, C> C setProperty(C config, Function<T, C> c, Supplier<Optional<T>> property) {
+    return property.get().map(c).orElse(config);
   }
-
 
 }

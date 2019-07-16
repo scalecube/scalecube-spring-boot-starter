@@ -1,0 +1,96 @@
+{
+  "groups": [
+    {
+      "name": "spring.scalecube.discovery.transport",
+      "type": "org.springframework.boot.scalecube.properties.discovery.DiscoveryTransport",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryTransport"
+    },
+    {
+      "name": "spring.scalecube.discovery.gossip",
+      "type": "org.springframework.boot.scalecube.properties.discovery.DiscoveryGossip",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryGossip"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership",
+      "type": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.failure-detector",
+      "type": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.scalecube.discovery.transport.port",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryTransport"
+    },
+    {
+      "name": "spring.scalecube.discovery.transport.connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryTransport"
+    },
+    {
+      "name": "spring.scalecube.discovery.transport.max-frame-length",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryTransport"
+    },
+    {
+      "name": "spring.scalecube.discovery.gossip.fanout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryGossip"
+    },
+    {
+      "name": "spring.scalecube.discovery.gossip.interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryGossip"
+    },
+    {
+      "name": "spring.scalecube.discovery.gossip.repeat-mult",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryGossip"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership.sync-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership.sync-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership.suspicion-mult",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership.sync-group",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.membership.seed-members",
+      "type": "java.util.List",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryMembership"
+    },
+    {
+      "name": "spring.scalecube.discovery.failure-detector.ping-interval",
+      "type":  "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
+    },
+    {
+      "name": "spring.scalecube.discovery.failure-detector.ping-timeout",
+      "type":  "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
+    },
+    {
+      "name": "spring.scalecube.discovery.failure-detector.ping-req-members",
+      "type": "java.lang.Integer",
+      "sourceType": "org.springframework.boot.scalecube.properties.discovery.DiscoveryFailureDetector"
+    }
+  ]
+}

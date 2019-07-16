@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnBean(ObjectMapper.class)
 @ConditionalOnProperty(
     prefix = "spring.scalecube.transport", name = "data-codec-type",
-    havingValue = "jackson", matchIfMissing = true)
+    havingValue = "jackson")
 public class JacksonCodecAutoConfiguration {
 
   @Bean

@@ -1,5 +1,7 @@
 spring:
   scalecube:
     discovery:
-      port: 0
-      ping-interval: 1000
+      transport:
+        port: 9000
+      gossip:
+        fanout:

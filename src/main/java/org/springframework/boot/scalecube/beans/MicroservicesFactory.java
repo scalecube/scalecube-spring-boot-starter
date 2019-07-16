@@ -37,7 +37,7 @@ class MicroservicesFactory extends AbstractFactoryBean<Microservices> implements
       builder.discovery(discoveryInitializer);
     }
     if (serviceTransport != null) {
-      builder.transport(opts -> opts.serviceTransport(() -> serviceTransport));
+      builder.transport(() -> serviceTransport);
     }
     String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
     Object[] services = Stream

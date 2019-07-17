@@ -17,6 +17,11 @@ public class ScalecubePropertiesConfiguration {
   @Bean
   @ConfigurationPropertiesBinding
   public Converter<String, Address> addressConverter() {
-    return Address::from;
+    return new Converter<String, Address>() {
+      @Override
+      public Address convert(String source) {
+        return Address.from(source);
+      }
+    };
   }
 }

@@ -39,9 +39,10 @@ class EssInjectInCustomerBeanTest {
         .builder()
         .services(service1)
         .discovery(endpoint -> new ScalecubeServiceDiscovery(endpoint)
-            .options(opts -> opts.seedMembers(microservices.discovery().address()))
+            .options(
+                opts -> opts.membership(o -> o.seedMembers(microservices.discovery().address())))
         )
-        .transport(opts -> opts.serviceTransport(RSocketServiceTransport::new))
+        .transport(RSocketServiceTransport::new)
         .startAwait();
   }
 

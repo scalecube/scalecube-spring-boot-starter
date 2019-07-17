@@ -19,6 +19,12 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
@@ -38,33 +44,26 @@
     <dependency>
       <groupId>io.scalecube</groupId>
       <artifactId>scalecube-services</artifactId>
-      <version>${scalecube.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.scalecube</groupId>
-      <artifactId>scalecube-services-transport-jackson</artifactId>
-      <version>${scalecube.version}</version>
-			<optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>io.scalecube</groupId>
       <artifactId>scalecube-services-discovery</artifactId>
-      <version>${scalecube.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
+      <groupId>io.scalecube</groupId>
+      <artifactId>scalecube-services-transport-jackson</artifactId>
+      <optional>true</optional>
     </dependency>
+
     <dependency>
       <groupId>io.scalecube</groupId>
       <artifactId>scalecube-services-transport-rsocket</artifactId>
-      <version>${scalecube.version}</version>
       <optional>true</optional>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -82,6 +81,30 @@
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.scalecube</groupId>
+        <artifactId>scalecube-services</artifactId>
+        <version>${scalecube.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.scalecube</groupId>
+        <artifactId>scalecube-services-discovery</artifactId>
+        <version>${scalecube.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.scalecube</groupId>
+        <artifactId>scalecube-services-transport-jackson</artifactId>
+        <version>${scalecube.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.scalecube</groupId>
+        <artifactId>scalecube-services-transport-rsocket</artifactId>
+        <version>${scalecube.version}</version>
       </dependency>
 
     </dependencies>

@@ -2,109 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.scalecube</groupId>
-  <artifactId>spring-boot-scalecube-starter</artifactId>
+  <artifactId>spring-boot-scalecube-parent</artifactId>
   <version>2.1.5.RELEASE</version>
+  <packaging>pom</packaging>
 
-  <name>scalecube-spring-boot-starter</name>
-  <description>Scalecube Integration for Spring Boot</description>
+  <modules>
+    <module>spring-boot-starter-scalecube</module>
+    <module>spring-boot-scalecube-autoconfigure</module>
+  </modules>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>1.8</java.version>
-    <scalecube.version>2.8.0</scalecube.version>
-  </properties>
-
-  <dependencies>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.scalecube</groupId>
-      <artifactId>scalecube-services</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.scalecube</groupId>
-      <artifactId>scalecube-services-discovery</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>io.scalecube</groupId>
-      <artifactId>scalecube-services-transport-jackson</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>io.scalecube</groupId>
-      <artifactId>scalecube-services-transport-rsocket</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
-        <!-- Import dependency management from Spring Boot -->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
+        <groupId>io.scalecube</groupId>
+        <artifactId>scalecube-bom</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.scalecube</groupId>
-        <artifactId>scalecube-services</artifactId>
-        <version>${scalecube.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.scalecube</groupId>
-        <artifactId>scalecube-services-discovery</artifactId>
-        <version>${scalecube.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.scalecube</groupId>
-        <artifactId>scalecube-services-transport-jackson</artifactId>
-        <version>${scalecube.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.scalecube</groupId>
-        <artifactId>scalecube-services-transport-rsocket</artifactId>
-        <version>${scalecube.version}</version>
       </dependency>
 
     </dependencies>
@@ -114,12 +34,17 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

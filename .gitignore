@@ -27,3 +27,5 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+/spring-boot-scalecube-autoconfigure/target/
+/spring-boot-starter-scalecube/target/

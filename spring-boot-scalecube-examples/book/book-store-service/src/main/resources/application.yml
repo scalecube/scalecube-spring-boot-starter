@@ -1,0 +1,11 @@
+store:
+  detective:
+    - The Murders in the Rue Morgue|Edgar Allan Poe
+    - The Big Sleep|Philip Marlowe
+spring:
+  scalecube:
+    discovery:
+      metadata:
+        unic: 2
+      transport:
+        port: 9000

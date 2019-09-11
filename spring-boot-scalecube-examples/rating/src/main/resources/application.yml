@@ -1,0 +1,7 @@
+spring:
+  scalecube:
+    discovery:
+      membership:
+        seed-members:
+          - localhost:9000
+          - localhost:9002

@@ -2,13 +2,13 @@ package io.scalecube.spring.example.rating;
 
 import io.scalecube.services.annotations.Service;
 import io.scalecube.services.annotations.ServiceMethod;
-import java.net.URI;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 @Service
-public interface DestinationProvider {
+public interface RatingCalculator {
 
   @ServiceMethod
-  Mono<URI> provide(String path);
+  Mono<Map<String, Long>> calculateRating(String genre);
 
 }

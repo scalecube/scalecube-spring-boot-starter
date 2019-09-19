@@ -9,8 +9,8 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>redirect</artifactId>
-    <name>redirect</name>
+    <artifactId>rating</artifactId>
+    <name>rating</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -35,6 +35,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.36.Final</version>
+        </dependency>
+        
     </dependencies>
 
     <build>

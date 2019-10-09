@@ -8,10 +8,10 @@ import org.springframework.boot.scalecube.beans.EnableScalecube;
 
 @SpringBootApplication
 @EnableScalecube(remoteServices = {BookStore.class, SalesStore.class})
-public class RedirectApplication {
+public class RatingApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(RedirectApplication.class, args);
+    SpringApplication.run(RatingApplication.class, args);
   }
 
 }

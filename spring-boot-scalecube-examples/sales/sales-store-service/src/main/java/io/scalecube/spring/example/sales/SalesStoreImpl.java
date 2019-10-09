@@ -16,6 +16,6 @@ public class SalesStoreImpl implements SalesStore {
 
   @Override
   public Mono<Sale> findForBook(String bookName) {
-    return Mono.justOrEmpty(salesByBook.get(bookName));
+    return Mono.justOrEmpty(salesByBook.get(bookName.replace(" ", "")));
   }
 }

@@ -16,7 +16,7 @@ public class GreetingRestController {
     this.ratingCalculator = ratingCalculator;
   }
 
-  @GetMapping("rating/{genre}")
+  @GetMapping("/rating/{genre}")
   public Mono<Map<String, Long>> print1(@PathVariable String genre) {
     return ratingCalculator.calculateRating(genre);
   }

@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <scalecube.version>2.8.5</scalecube.version>
+    <scalecube.version>2.8.8</scalecube.version>
   </properties>
 
   <dependencies>

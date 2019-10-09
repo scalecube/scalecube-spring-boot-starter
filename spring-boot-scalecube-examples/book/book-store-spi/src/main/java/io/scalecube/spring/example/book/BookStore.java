@@ -5,9 +5,9 @@ import io.scalecube.services.annotations.Service;
 import io.scalecube.services.annotations.ServiceMethod;
 import reactor.core.publisher.Mono;
 
-@Service("redirect-store")
+@Service("book-store")
 public interface BookStore {
 
-    @ServiceMethod("read-url")
+    @ServiceMethod("find-book-by-genre")
     Mono<BookSet> findByGenre(String genre);
 }

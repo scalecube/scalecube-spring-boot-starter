@@ -1,7 +1,7 @@
 sales:
   The Murders in the Rue Morgue:
-    2019: 200.000
-    2018: 356.000
+    2019: 200
+    2018: 356
 spring:
   scalecube:
     discovery:

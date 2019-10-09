@@ -5,10 +5,10 @@ import io.scalecube.services.annotations.Service;
 import io.scalecube.services.annotations.ServiceMethod;
 import reactor.core.publisher.Mono;
 
-@Service("destination-selector")
+@Service("sales-store")
 public interface SalesStore {
 
-    @ServiceMethod("select")
+    @ServiceMethod("find-book-sale")
     Mono<Sale> findForBook(String bookName);
 
 }

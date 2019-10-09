@@ -1,6 +1,7 @@
 package io.scalecube.spring.example.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Book {
 
@@ -8,7 +9,7 @@ public class Book {
     private final String author;
 
     @JsonCreator
-    public Book(String name, String author) {
+    public Book(@JsonProperty("name") String name, @JsonProperty("author") String author) {
         this.name = name;
         this.author = author;
     }

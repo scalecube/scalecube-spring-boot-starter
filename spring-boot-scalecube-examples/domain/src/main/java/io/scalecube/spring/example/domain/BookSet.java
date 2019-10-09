@@ -1,7 +1,9 @@
 package io.scalecube.spring.example.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,12 +13,12 @@ public class BookSet {
 
   private final List<Book> books;
 
-  @JsonCreator
-  public BookSet(List<Book> books) {
+  private BookSet(List<Book> books) {
     this.books = books == null || books.isEmpty() ? Collections.emptyList()
         : new ArrayList<>(books);
   }
 
+  @JsonCreator
   public static BookSet of(List<Book> books) {
     return books == null ? null : new BookSet(books);
   }
@@ -30,6 +32,7 @@ public class BookSet {
     return books.stream();
   }
 
+  @JsonIgnore
   public boolean isEmpty() {
     return books.isEmpty();
   }

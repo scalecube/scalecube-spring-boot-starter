@@ -7,6 +7,7 @@
         <groupId>io.scalecube.spring.examples</groupId>
         <artifactId>spring-boot-scalecube-examples</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>rating</artifactId>
@@ -33,12 +34,6 @@
             <groupId>io.scalecube.spring.examples</groupId>
             <artifactId>sales-store-spi</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-            <version>4.1.36.Final</version>
         </dependency>
         
     </dependencies>

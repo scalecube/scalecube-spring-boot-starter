@@ -1,5 +1,7 @@
 package io.scalecube.spring.example.book;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.scalecube.spring.example.domain.Book;
 import java.util.HashMap;
 import java.util.List;

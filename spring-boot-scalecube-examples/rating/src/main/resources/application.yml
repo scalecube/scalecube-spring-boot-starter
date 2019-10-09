@@ -1,7 +1,9 @@
 spring:
   scalecube:
+    transport:
+      data-codec-type: jackson
     discovery:
       membership:
         seed-members:
           - localhost:9000
-          - localhost:9002
+          - localhost:21000

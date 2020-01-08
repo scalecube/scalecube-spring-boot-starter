@@ -10,6 +10,15 @@
   <version>2.1.8.RELEASE</version>
   <packaging>pom</packaging>
 
+  <name>ScaleCube</name>
+  <scm>
+    <url>https://github.com/scalecube/scalecube-spring-boot-starter.git</url>
+    <connection>scm:git:git@github.com:scalecube/scalecube-spring-boot-starter.git</connection>
+    <developerConnection>scm:git:git@github.com:scalecube/scalecube-spring-boot-starter.git
+    </developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <modules>
     <module>spring-boot-starter-scalecube</module>
     <module>spring-boot-scalecube-autoconfigure</module>

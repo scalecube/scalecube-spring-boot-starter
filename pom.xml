@@ -6,13 +6,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.scalecube</groupId>
-  <artifactId>spring-boot-scalecube-parent</artifactId>
+  <artifactId>scalecube-spring-boot-parent</artifactId>
   <version>2.1.8.RELEASE</version>
   <packaging>pom</packaging>
 
   <modules>
-    <module>spring-boot-starter-scalecube</module>
-    <module>spring-boot-scalecube-autoconfigure</module>
+    <module>scalecube-spring-boot-starter</module>
+    <module>scalecube-spring-boot-autoconfigure</module>
   </modules>
 
   <dependencyManagement>
@@ -21,6 +21,15 @@
       <dependency>
         <groupId>io.scalecube</groupId>
         <artifactId>scalecube-bom</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -47,5 +56,13 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <url>https://github.com/scalecube/scalecube-spring-boot-starter</url>
+    <connection>scm:git@github.com:scalecube/scalecube-spring-boot-starter.git</connection>
+    <developerConnection>scm:git@github.com:scalecube/scalecube-spring-boot-starter.git
+    </developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
 </project>

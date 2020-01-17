@@ -1,31 +1,22 @@
-HELP.md
-/target/
-!.mvn/wrapper/maven-wrapper.jar
+# everything that starts with dot (hidden files)
+.*
+# except this file
+!.gitignore
+# except this file-extention
+!.*.yml
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Build targets
+**/target/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# logs and reports
+*.csv
+*.log
+*.zip
+
+# IntelliJ IDEA project files and directories
 *.iml
-*.ipr
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-/build/
 
-### VS Code ###
-.vscode/
-/scalecube-spring-boot-autoconfigure/target/
-/scalecube-spring-boot-starter/target/
+**/pom.xml.releaseBackup
+/release.properties
+

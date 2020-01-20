@@ -17,6 +17,11 @@ public class ScalecubeDiscoveryConfiguration {
 
   private ScalecubeProperties properties;
 
+  /**
+   * {@link DiscoveryInitializer} bean.
+   *
+   * @return instance of {@link DiscoveryInitializer}
+   */
   @Bean
   public DiscoveryInitializer discoveryInitializer() {
     return endpoint -> {
@@ -28,7 +33,6 @@ public class ScalecubeDiscoveryConfiguration {
       return serviceDiscovery;
     };
   }
-
 
   @Autowired
   public void setProperties(ScalecubeProperties properties) {

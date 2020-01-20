@@ -20,14 +20,13 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * BeanPostProcessor for {@link SelectionStrategy}.
- */
-class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAware,
-    RouterCreator {
+ * */
+class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAware, RouterCreator {
 
   static final String BEAN_NAME = "selectionStrategyBeanPostProcessor";
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(SelectionStrategyPostProcessor.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(SelectionStrategyPostProcessor.class);
 
   private BeanFactory beanFactory;
 
@@ -37,7 +36,7 @@ class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAw
    * @param bean the new bean instance
    * @param beanName the name of the bean
    * @return the bean instance to use, either the original or a wrapped one; if {@code null}, no
-   * subsequent BeanPostProcessors will be invoked
+   *     subsequent BeanPostProcessors will be invoked
    * @throws org.springframework.beans.BeansException in case of errors
    * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
    */
@@ -52,62 +51,61 @@ class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAw
   private void customizeRouterThroughSetter(Object bean) {
     Class<?> targetClass = bean.getClass();
     do {
-      ReflectionUtils.doWithLocalMethods(bean.getClass(), method -> {
-        PropertyDescriptor property = BeanUtils.findPropertyForMethod(method);
-        if (property == null) {
-          return;
-        }
-        if (!isAutowireExternalService(method)) {
-          return;
-        }
-        String propertyName = property.getName();
-        Class<?> propertyType = property.getPropertyType();
-        Object externalService;
-        Method readMethod = property.getReadMethod();
-        if (readMethod != null) {
-          externalService = ReflectionUtils.invokeMethod(readMethod, bean);
-        } else {
-          Field field = ReflectionUtils.findField(bean.getClass(), propertyName, propertyType);
-          ReflectionUtils.makeAccessible(field);
-          externalService = ReflectionUtils.getField(field, bean);
-        }
-        if (externalService instanceof RouterConsumer) {
-          Method writeMethod = property.getWriteMethod();
-          Parameter parameter = writeMethod.getParameters()[0];
-          SelectionStrategy annotation = parameter.getAnnotation(SelectionStrategy.class);
-          Router router = router(annotation, beanFactory);
-          ((RouterConsumer) externalService).setRouter(router);
-        }
-      });
+      ReflectionUtils.doWithLocalMethods(
+          bean.getClass(),
+          method -> {
+            PropertyDescriptor property = BeanUtils.findPropertyForMethod(method);
+            if (property == null) {
+              return;
+            }
+            if (!isAutowireExternalService(method)) {
+              return;
+            }
+            String propertyName = property.getName();
+            Class<?> propertyType = property.getPropertyType();
+            Object externalService;
+            Method readMethod = property.getReadMethod();
+            if (readMethod != null) {
+              externalService = ReflectionUtils.invokeMethod(readMethod, bean);
+            } else {
+              Field field = ReflectionUtils.findField(bean.getClass(), propertyName, propertyType);
+              ReflectionUtils.makeAccessible(field);
+              externalService = ReflectionUtils.getField(field, bean);
+            }
+            if (externalService instanceof RouterConsumer) {
+              Method writeMethod = property.getWriteMethod();
+              Parameter parameter = writeMethod.getParameters()[0];
+              SelectionStrategy annotation = parameter.getAnnotation(SelectionStrategy.class);
+              Router router = router(annotation, beanFactory);
+              ((RouterConsumer) externalService).setRouter(router);
+            }
+          });
       targetClass = targetClass.getSuperclass();
-    }
-    while (targetClass != null && targetClass != Object.class);
+    } while (targetClass != null && targetClass != Object.class);
   }
 
   private void customizeRouterOnThroughField(final Object bean) {
     Class<?> targetClass = bean.getClass();
     do {
-      ReflectionUtils.doWithLocalFields(targetClass, field -> {
-        SelectionStrategy annotation = field.getAnnotation(SelectionStrategy.class);
-        if (annotation != null) {
-          if (Modifier.isStatic(field.getModifiers())) {
-            logger.info("Static fields not supported for injection of custom router.");
-            return;
-          }
-          Router router = router(annotation, beanFactory);
-          ReflectionUtils.makeAccessible(field);
-          RouterConsumer externalService = (RouterConsumer) field.get(bean);
-          externalService.setRouter(router);
-        }
-      });
+      ReflectionUtils.doWithLocalFields(
+          targetClass,
+          field -> {
+            SelectionStrategy annotation = field.getAnnotation(SelectionStrategy.class);
+            if (annotation != null) {
+              if (Modifier.isStatic(field.getModifiers())) {
+                logger.info("Static fields not supported for injection of custom router.");
+                return;
+              }
+              Router router = router(annotation, beanFactory);
+              ReflectionUtils.makeAccessible(field);
+              RouterConsumer externalService = (RouterConsumer) field.get(bean);
+              externalService.setRouter(router);
+            }
+          });
       targetClass = targetClass.getSuperclass();
-    }
-    while (targetClass != null && targetClass != Object.class);
+    } while (targetClass != null && targetClass != Object.class);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;
@@ -117,11 +115,11 @@ class SelectionStrategyPostProcessor implements BeanPostProcessor, BeanFactoryAw
     boolean isAutowire = method.isAnnotationPresent(Autowired.class);
     boolean hasExternalServiceAsArg = false;
     for (Parameter parameter : method.getParameters()) {
-      boolean b = AnnotationUtils.findAnnotation(parameter.getType(), Service.class) != null &&
-          parameter.isAnnotationPresent(SelectionStrategy.class);
+      boolean b =
+          AnnotationUtils.findAnnotation(parameter.getType(), Service.class) != null
+              && parameter.isAnnotationPresent(SelectionStrategy.class);
       hasExternalServiceAsArg = hasExternalServiceAsArg || b;
     }
     return isAutowire && hasExternalServiceAsArg;
   }
-
 }

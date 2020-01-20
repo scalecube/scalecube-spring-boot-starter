@@ -22,9 +22,8 @@ import reactor.core.publisher.Mono;
 /**
  * Invocation handler for remote service client proxy.
  *
- * <p>Stores the state of the proxy object.
- * Initializes {@link ServiceCall serviceCall} at the first call of the method to receive data from
- * a remote service.
+ * <p>Stores the state of the proxy object. Initializes {@link ServiceCall serviceCall} at the first
+ * call of the method to receive data from a remote service.
  *
  * @see EnableScalecubeClientsImportSelector
  */
@@ -33,35 +32,28 @@ public class RemoteServiceClientInvocationHandler implements InvocationHandler {
   private static final ServiceMessage UNEXPECTED_EMPTY_RESPONSE =
       ServiceMessage.error(503, 503, "Unexpected empty response");
 
-
   private final BeanFactory beanFactory;
   private final Map<Method, MethodInfo> genericReturnTypes;
   private final Class<?> serviceInterface;
   private AtomicReference<ServiceCall> serviceCallRef = new AtomicReference<>();
   private Router router;
 
-  RemoteServiceClientInvocationHandler(BeanFactory beanFactory,
-      Class<?> serviceInterface) {
+  RemoteServiceClientInvocationHandler(BeanFactory beanFactory, Class<?> serviceInterface) {
     this.beanFactory = beanFactory;
     this.genericReturnTypes = Reflect.methodsInfo(serviceInterface);
     this.serviceInterface = serviceInterface;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   @SuppressWarnings("unchecked")
   public Object invoke(Object proxy, Method method, Object[] params) {
 
-    Optional<Object> check =
-        toStringOrEqualsOrHashCode(method.getName(), serviceInterface, params);
+    Optional<Object> check = toStringOrEqualsOrHashCode(method.getName(), serviceInterface, params);
     if (check.isPresent()) {
       return check.get(); // toString, hashCode was invoked.
     }
 
-    if ("setRouter".equals(method.getName()) && Objects.nonNull(params)
-        && params.length == 1) {
+    if ("setRouter".equals(method.getName()) && Objects.nonNull(params) && params.length == 1) {
       this.router = (Router) params[0];
       return null;
     }
@@ -91,14 +83,12 @@ public class RemoteServiceClientInvocationHandler implements InvocationHandler {
         // cast.
         return serviceCall
             .requestBidirectional(
-                Flux.from((Publisher) params[0])
-                    .map(data -> toServiceMessage(methodInfo, data)),
+                Flux.from((Publisher) params[0]).map(data -> toServiceMessage(methodInfo, data)),
                 returnType)
             .transform(asFlux(isServiceMessage));
 
       default:
-        throw new IllegalArgumentException(
-            "Communication mode is not supported: " + method);
+        throw new IllegalArgumentException("Communication mode is not supported: " + method);
     }
   }
 
@@ -122,7 +112,7 @@ public class RemoteServiceClientInvocationHandler implements InvocationHandler {
    * @param serviceInterface for a given service interface.
    * @param args parameters that where invoked.
    * @return Optional object as result of to string equals or hashCode result or absent if none of
-   * these where invoked.
+   *     these where invoked.
    */
   private Optional<Object> toStringOrEqualsOrHashCode(
       String method, Class<?> serviceInterface, Object... args) {
@@ -162,5 +152,4 @@ public class RemoteServiceClientInvocationHandler implements InvocationHandler {
   private Function<ServiceMessage, Object> msgToResp() {
     return sm -> sm.hasData() ? sm.data() : UNEXPECTED_EMPTY_RESPONSE;
   }
-
 }

@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.util.ClassUtils;
 
-public class StartingDaemonRefreshListener implements ApplicationListener<ContextRefreshedEvent>,
-    BeanClassLoaderAware {
+public class StartingDaemonRefreshListener
+    implements ApplicationListener<ContextRefreshedEvent>, BeanClassLoaderAware {
 
   private static final String SERVLET_APPLICATION_CONTEXT_CLASS =
       "org.springframework.web.context.WebApplicationContext";
@@ -21,15 +21,18 @@ public class StartingDaemonRefreshListener implements ApplicationListener<Contex
   public void onApplicationEvent(ContextRefreshedEvent event) {
     Class<?> applicationContextClass = event.getApplicationContext().getClass();
     boolean webApp =
-        isAssignable(SERVLET_APPLICATION_CONTEXT_CLASS, applicationContextClass) || isAssignable(
-            REACTIVE_APPLICATION_CONTEXT_CLASS, applicationContextClass);
+        isAssignable(SERVLET_APPLICATION_CONTEXT_CLASS, applicationContextClass)
+            || isAssignable(REACTIVE_APPLICATION_CONTEXT_CLASS, applicationContextClass);
     if (webApp) {
       return;
     }
-    Thread awaitThread = new Thread(() -> {
-      Microservices microservices = event.getApplicationContext().getBean(Microservices.class);
-      microservices.onShutdown().block();
-    });
+    Thread awaitThread =
+        new Thread(
+            () -> {
+              Microservices microservices =
+                  event.getApplicationContext().getBean(Microservices.class);
+              microservices.onShutdown().block();
+            });
     awaitThread.setDaemon(false);
     awaitThread.setContextClassLoader(classLoader);
     awaitThread.setName("await");
@@ -44,10 +47,8 @@ public class StartingDaemonRefreshListener implements ApplicationListener<Contex
   private static boolean isAssignable(String target, Class<?> type) {
     try {
       return ClassUtils.resolveClassName(target, null).isAssignableFrom(type);
-    }
-    catch (Throwable ex) {
+    } catch (Throwable ex) {
       return false;
     }
   }
-
 }

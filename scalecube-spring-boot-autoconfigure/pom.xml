@@ -4,16 +4,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-
   <parent>
     <groupId>io.scalecube</groupId>
     <artifactId>scalecube-spring-boot-parent</artifactId>
-    <version>2.2.2.RELEASE</version>
+    <version>2.2.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>scalecube-spring-boot-autoconfigure</artifactId>
   <name>scalecube-spring-boot-autoconfigure</name>
   <description>ScaleCube Integration for Spring Boot</description>
+  <packaging>jar</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,26 +73,5 @@
     </dependency>
 
   </dependencies>
-
-  <scm>
-    <url>https://github.com/scalecube/scalecube-spring-boot-starter</url>
-    <connection>scm:git@github.com:scalecube/scalecube-spring-boot-starter.git</connection>
-    <developerConnection>scm:git@github.com:scalecube/scalecube-spring-boot-starter.git
-    </developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

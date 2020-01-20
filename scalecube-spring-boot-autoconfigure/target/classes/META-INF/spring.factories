@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.springframework.boot.scalecube.ScalecubeAutoConfiguration
-org.springframework.context.ApplicationListener=\
-  org.springframework.boot.scalecube.beans.StartingDaemonRefreshListener

@@ -25,25 +25,29 @@ import reactor.netty.tcp.TcpServer;
 @ConditionalOnBean(ServiceMessageCodec.class)
 public class RSocketTransportAutoConfiguration {
 
-
+  /**
+   * {@link ServiceTransport} bean.
+   *
+   * @return instance of {@link ServiceTransport}
+   */
   @Bean
   public ServiceTransport rsocketServiceTransport(ScalecubeProperties properties) {
     RSocketServiceTransport serviceTransport = new RSocketServiceTransport();
 
-    Optional<Function<LoopResources, TcpServer>> portCustomizerOpt = properties
-        .getTransportIfExist()
-        .flatMap(Transport::getPort)
-        .map(port -> loopResources -> TcpServer
-            .create()
-            .runOn(loopResources)
-            .port(port)
-        );
-    Optional<Integer> workerCountOpt = properties
-        .getTransportIfExist()
-        .flatMap(Transport::getRsocket)
-        .flatMap(RSocketTransport::getWorkerCount);
-    serviceTransport = setProperty(serviceTransport, serviceTransport::tcpServer, () -> portCustomizerOpt);
-    serviceTransport = setProperty(serviceTransport, serviceTransport::numOfWorkers, () -> workerCountOpt);
+    Optional<Function<LoopResources, TcpServer>> portCustomizerOpt =
+        properties
+            .getTransportIfExist()
+            .flatMap(Transport::getPort)
+            .map(port -> loopResources -> TcpServer.create().runOn(loopResources).port(port));
+    Optional<Integer> workerCountOpt =
+        properties
+            .getTransportIfExist()
+            .flatMap(Transport::getRsocket)
+            .flatMap(RSocketTransport::getWorkerCount);
+    serviceTransport =
+        setProperty(serviceTransport, serviceTransport::tcpServer, () -> portCustomizerOpt);
+    serviceTransport =
+        setProperty(serviceTransport, serviceTransport::numOfWorkers, () -> workerCountOpt);
 
     return serviceTransport;
   }

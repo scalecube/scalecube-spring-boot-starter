@@ -8,12 +8,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 
 @SpringBootConfiguration
-@EnableConfigurationProperties({
-    ScalecubeProperties.class
-})
+@EnableConfigurationProperties({ScalecubeProperties.class})
 public class ScalecubePropertiesConfiguration {
 
-
+  /**
+   * Address converter bean.
+   *
+   * @return instance of address converter
+   */
   @Bean
   @ConfigurationPropertiesBinding
   public Converter<String, Address> addressConverter() {

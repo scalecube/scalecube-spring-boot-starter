@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- * Enables Scalecube Services capability. To be used on &#064;Configuration classes as follows:
- * <br>
+ * Enables Scalecube Services capability. To be used on &#064;Configuration classes as follows: <br>
+ *
  * <pre class="code">
  *   &#064;Configuration
  *   &#064;EnableScalecube({RemoteService.class})
@@ -19,9 +19,11 @@ import org.springframework.core.annotation.AliasFor;
  *     // various &#064;Bean definitions
  *   }
  * </pre>
+ *
  * <br>
  * This enables detection of &#064;{@link SelectionStrategy} annotation on any Spring-managed bean
  * in the container. For example, given a class {@code SomeLocalService}:
+ *
  * <pre class="code">
  * public class SomeLocalService implements LocalService {
  *
@@ -33,9 +35,11 @@ import org.springframework.core.annotation.AliasFor;
  *   }
  * }
  *  </pre>
+ *
  * <br>
  * the following configuration guarantees that the load on the RemoteService will be distributed
  * according to the algorithm defined in the "randomServiceRouter" bean:
+ *
  * <pre class="code">
  * &#064;Configuration
  * &#064;EnableScalecube(RemoteService.class)
@@ -52,11 +56,12 @@ import org.springframework.core.annotation.AliasFor;
  *  }
  * }
  * </pre>
+ *
  * <br>
  * Annotation &#064;{@link SelectionStrategy} enables you to set custom {@link
  * io.scalecube.services.routing.Router} in any remote service. Each injected RemoteService is
- * unique (because of the prototype scope), so modifying the {@link io.scalecube.services.routing.Router}
- * does not affect other RemoteService instances. For example:
+ * unique (because of the prototype scope), so modifying the {@link
+ * io.scalecube.services.routing.Router} does not affect other RemoteService instances. For example:
  *
  * <pre class="code">
  *   public class SomeService {
@@ -98,10 +103,9 @@ import org.springframework.core.annotation.AliasFor;
  *     }
  *   }
  * </pre>
+ * <br/>
  * following, {@code SomeService} will distribute the loading between several instances of Remote
- * Service according to RoundRobin algorithm, and SomeElseService will distribute the load
- * randomly.
- *
+ * Service according to RoundRobin algorithm, and SomeElseService will distribute the load randomly.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

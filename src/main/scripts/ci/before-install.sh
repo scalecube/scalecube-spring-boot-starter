@@ -3,9 +3,6 @@
 DIRNAME=$(dirname $0)
 BEFORE_INSTALL_EXEC_FILES=$(find $DIRNAME -name 'before-install-*.sh')
 
-echo install scalecube-bom in local repository
-mvn install -f ./scalecube-bom/pom.xml
-
 echo       Running $0
 echo *-*-*-*-*-*-*-*-*-*-*-*-*-*
 
